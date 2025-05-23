@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Regression mit FFNN - TF.js</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="libs/tensorflow.js"></script>
+  <script src="libs/plotly.js"></script>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"></script>
+  <script src="script.js"></script>
+</head>
+<body>
+<h1>Regression mit FFNN</h1>
+
+<section>
+  <button onclick="generateData()">1. Daten generieren</button>
+  <button onclick="trainModel('unverrauscht')">2. Modell ohne Rauschen trainieren</button>
+  <button onclick="trainModel('bestfit')">3. Modell best-fit trainieren</button>
+  <button onclick="trainModel('overfit')">4. Modell over-fit trainieren</button>
+</section>
+
+<section id="result-section">
+  <h2>R1: Datensätze</h2>
+  <div class="row">
+    <div id="plot-data-clean" class="plot"></div>
+    <div id="plot-data-noisy" class="plot"></div>
+  </div>
+
+  <h2>R2: Modell ohne Rauschen</h2>
+  <div class="row">
+    <div id="plot-predict-unverrauscht-train"></div>
+    <div id="plot-predict-unverrauscht-test"></div>
+
+    <div id="plot-predict-clean-train" class="plot"></div>
+    <div id="plot-predict-clean-test" class="plot"></div>
+  </div>
+
+  <h2>R3: Modell best-fit</h2>
+  <div class="row">
+    <div id="plot-predict-bestfit-train" class="plot"></div>
+    <div id="plot-predict-bestfit-test" class="plot"></div>
+  </div>
+
+  <h2>R4: Modell over-fit</h2>
+  <div class="row">
+    <div id="plot-predict-overfit-train" class="plot"></div>
+    <div id="plot-predict-overfit-test" class="plot"></div>
+  </div>
+
+  <div id="loss-values"></div>
+
+</section>
+
+<section>
+  <h2>Diskussion</h2>
+  <p id="discussion-text">
+    <!-- Hier kannst du deine Beobachtungen und Erkenntnisse einfügen -->
+  </p>
+</section>
+
+<section>
+  <h2>Dokumentation</h2>
+  <h3>Technisch</h3>
+  <p>- TensorFlow.js: Für Modelltraining und Vorhersagen<br>
+    - Plotly.js: Für interaktive Diagramme</p>
+
+  <h3>Fachlich</h3>
+  <p>Die Funktion wurde über zufällig generierte Punkte durch ein FFNN approximiert. Die Modelle wurden auf verrauschten und unverrauschten Daten trainiert und verglichen. Quellen: Aufgabenstellung, TensorFlow.js Doku.</p>
+</section>
+
+</body>
+</html>
