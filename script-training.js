@@ -1,4 +1,3 @@
-// script.js
 // Rohdaten und verrauschte Daten + Aufteilung in Trainings- und Testdaten
 let rawData = [], noisyData = [], trainSet = {}, testSet = {};
 
@@ -30,15 +29,15 @@ function generateData() {
 // Erzeugt normalverteiltes Rauschen (Zufallswert mit Mittelwert und Standardabweichung)
 function gaussianNoise(mean = 0, stddev = 1) {
     let u = 0, v = 0;
-    while (u === 0) u = Math.random();
+    while (u === 0) u = Math.random(); // vermeiden von log(0)
     while (v === 0) v = Math.random();
     return stddev * Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v) + mean;
 }
 
 // Teilt ein Array zufällig in zwei Hälften
 function splitData(data) {
-    const shuffled = [...data].sort(() => 0.5 - Math.random());
-    const mid = Math.floor(shuffled.length / 2);
+    const shuffled = [...data].sort(() => 0.5 - Math.random()); // zufällige Reihenfolge
+    const mid = Math.floor(shuffled.length / 2); // Mitte bestimmen
     return [shuffled.slice(0, mid), shuffled.slice(mid)];
 }
 
@@ -48,7 +47,9 @@ async function trainModel(type) {
     let data = type === 'unverrauscht' ? trainSet.raw : trainSet.noisy;
 
     // Wähle Anzahl der Trainingsdurchläufe je nach Typ
-    const epochs = type === 'overfit' ? 300 : (type === 'bestfit' ? 50 : 100);
+    const epochs = type === 'overfit' ? 1000 : (type === 'bestfit' ? 70 : 150);
+
+    // Modell erstellen (Feedforward Neural Network)
     const model = createModel();
 
     // Eingabedaten (x) und Ausgabedaten (y) in Tensoren umwandeln
@@ -70,8 +71,9 @@ async function trainModel(type) {
     // Modell bewerten (auf Trainings- und Testdaten)
     await evaluateModel(model, type);
 
-    await plotLearnedFunction(model, type);
+    return model; // Modell zurückgeben für weitere Verwendung
 }
+
 
 // Erstellt ein einfaches neuronales Netz mit 2 versteckten Schichten (je 100 Neuronen)
 function createModel() {
@@ -152,7 +154,6 @@ function plotData() {
     ], layout);
 }
 
-// Zeichnet die Vorhersagen des Modells (Trainings- und Testdaten)
 function plotPredictions(type, train, trainPred, test, testPred) {
     const layout = { xaxis: { title: 'x' }, yaxis: { title: 'y' } };
     let trainId = `plot-predict-${type}-train`;
@@ -174,33 +175,6 @@ function plotPredictions(type, train, trainPred, test, testPred) {
 }
 
 
-async function plotLearnedFunction(model, type) {
-    // x-Werte von -2 bis 2, gleichmäßig verteilt
-    const xs = tf.linspace(-2, 2, 200).reshape([200, 1]);
-    const preds = model.predict(xs);
-    const yPred = await preds.data();
-
-    // Umwandeln in Array von Punkten
-    const predPoints = Array.from(xs.dataSync()).map((x, i) => ({
-        x, y: yPred[i]
-    }));
-
-    // Zeichnen
-    Plotly.newPlot(`plot-function-${type}`, [
-        {
-            x: predPoints.map(p => p.x),
-            y: predPoints.map(p => p.y),
-            mode: 'lines',
-            name: 'Learned Function'
-        }
-    ], { title: `Gelernte Funktion (${type})`, xaxis: { title: 'x' }, yaxis: { title: 'y' } });
-
-    // Aufräumen
-    xs.dispose();
-    preds.dispose();
-}
-
-
 // Zeigt die Fehlerwerte (Loss) im HTML-Dokument an
 function displayLoss(type, trainLoss, testLoss) {
     const div = document.getElementById('loss-values');
@@ -210,24 +184,31 @@ function displayLoss(type, trainLoss, testLoss) {
     div.innerHTML += html;
 }
 
-function saveDataset(name, data) {
-    localStorage.setItem(name, JSON.stringify(data));
+function saveDataAsJson(data, filename) {
+    const jsonStr = JSON.stringify(data);
+    const blob = new Blob([jsonStr], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
 }
 
-function loadDataset(name) {
-    const data = localStorage.getItem(name);
-    return data ? JSON.parse(data) : null;
+function saveDatasets() {
+    saveDataAsJson(rawData, 'rawData.json');
+    saveDataAsJson(noisyData, 'noisyData.json');
+    saveDataAsJson(trainSet, 'trainSet.json');
+    saveDataAsJson(testSet, 'testSet.json');
+    alert("Datensätze wurden als JSON-Dateien heruntergeladen.");
 }
 
-async function saveModel(model, name) {
-    if (model) {
-        await model.save(`indexeddb://${name}`);
-        alert('Modell gespeichert!');
+let trainedModels = {}; // Objekt, um trainierte Modelle zwischenzuspeichern
+
+async function saveModelFiles(type) {
+    if (!trainedModels[type]) {
+        trainedModels[type] = await trainModel(type);
     }
+    await trainedModels[type].save(`downloads://${type}-model`);
+    alert(`Modell '${type}' wurde gespeichert.`);
 }
-async function loadAndShowModel(name) {
-    const model = await tf.loadLayersModel(`indexeddb://${name}`);
-    // Zeige nach dem Laden die Vorhersagen an
-    await evaluateModel(model, name);
-}
-

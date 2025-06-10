@@ -8,17 +8,10 @@
   <script src="libs/plotly.js"></script>
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"></script>
-  <script src="script.js"></script>
+  <script src="script-index.js"></script>
 </head>
 <body>
 <h1>Regression mit FFNN</h1>
-
-<section>
-  <button onclick="generateData()">1. Daten generieren</button>
-  <button onclick="trainModel('unverrauscht')">2. Modell ohne Rauschen trainieren</button>
-  <button onclick="trainModel('bestfit')">3. Modell best-fit trainieren</button>
-  <button onclick="trainModel('overfit')">4. Modell over-fit trainieren</button>
-</section>
 
 <section id="result-section">
   <h2>R1: Datensätze</h2>
@@ -54,18 +47,9 @@
 
 <section>
   <h2>Diskussion</h2>
-  <p>
-    Im Experiment wurde gezeigt, wie ein künstliches neuronales Netz (FFNN) mithilfe von TensorFlow.js lernen kann, eine mathematische Funktion zu approximieren.
-    <br><br>
-    Beim Modell ohne Rauschen (R2) waren die Eingabedaten sauber, und das Modell konnte die zugrunde liegende Kurve gut lernen. Die Vorhersagen (Linie) stimmen relativ gut mit den echten Punkten überein. Der Testfehler ist höher als der Trainingsfehler, aber akzeptabel – das Modell kann also einigermaßen gut generalisieren.
-    <br><br>
-    Beim Best-Fit-Modell (R3) wurden verrauschte Daten verwendet. Das bedeutet, dass die Punkte nicht perfekt auf der wahren Kurve liegen. Trotzdem hat das Modell gelernt, den ungefähren Verlauf zu erkennen, ohne zu sehr auf das Rauschen zu reagieren – eine gute Balance.
-    <br><br>
-    Beim Overfitting-Modell (R4) wurde das Netzwerk zu lange auf die verrauschten Daten trainiert. Dadurch hat es angefangen, das Rauschen mitzulernen. Das sieht man daran, dass die Vorhersagelinie unruhiger wird und die Testdaten schlechter vorhergesagt werden. Der Testfehler steigt, obwohl der Trainingsfehler kleiner wird – ein typisches Anzeichen für Overfitting.
-    <br><br>
-    Zusammenfassend zeigt das Experiment, wie wichtig es ist, ein Modell nicht zu wenig, aber auch nicht zu viel zu trainieren, um gute Vorhersagen auf neuen Daten zu ermöglichen.
+  <p id="discussion-text">
+    <!-- Hier kannst du deine Beobachtungen und Erkenntnisse einfügen -->
   </p>
-
 </section>
 
 <section>
