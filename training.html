@@ -11,70 +11,80 @@
   <script src="script-training.js"></script>
 </head>
 <body>
-<h1>Regression mit FFNN</h1>
-
-<section>
-  <button onclick="generateData()">1. Daten generieren</button>
-  <button onclick="trainModel('unverrauscht')">2. Modell ohne Rauschen trainieren</button>
-  <button onclick="trainModel('bestfit')">3. Modell best-fit trainieren</button>
-  <button onclick="trainModel('overfit')">4. Modell over-fit trainieren</button>
-
-  <!-- Neue Buttons zum Speichern -->
-  <button onclick="saveDatasets()">5. Datensätze speichern</button>
-  <button onclick="saveModelFiles('unverrauscht')">6. Modell ohne Rauschen speichern</button>
-  <button onclick="saveModelFiles('bestfit')">7. Modell best-fit speichern</button>
-  <button onclick="saveModelFiles('overfit')">8. Modell over-fit speichern</button>
-</section>
-
+<header>
+  <h1>Regression mit <strong>FFNN</strong> - Entwicklung</h1>
+</header>
 
 <section id="result-section">
-  <h2>R1: Datensätze</h2>
-  <div class="row">
-    <div id="plot-data-clean" class="plot"></div>
-    <div id="plot-data-noisy" class="plot"></div>
+  <h2>Datensätze</h2>
+  <div class="button-container">
+    <button onclick="generateData()">Daten generieren</button>
   </div>
-
-  <h2>R2: Modell ohne Rauschen</h2>
-  <div class="row">
-    <div id="plot-predict-unverrauscht-train"></div>
-    <div id="plot-predict-unverrauscht-test"></div>
-
-    <div id="plot-predict-clean-train" class="plot"></div>
-    <div id="plot-predict-clean-test" class="plot"></div>
+  <div class="row plot-container-wrapper">
+    <div id="plot-data-clean" class="plot responsive-plot"></div>
+    <div id="plot-data-noisy" class="plot responsive-plot"></div>
   </div>
-
-  <h2>R3: Modell best-fit</h2>
-  <div class="row">
-    <div id="plot-predict-bestfit-train" class="plot"></div>
-    <div id="plot-predict-bestfit-test" class="plot"></div>
+  <div class="button-container">
+    <button onclick="saveDatasets()">Datensätze speichern</button>
   </div>
-
-  <h2>R4: Modell over-fit</h2>
-  <div class="row">
-    <div id="plot-predict-overfit-train" class="plot"></div>
-    <div id="plot-predict-overfit-test" class="plot"></div>
-  </div>
-
-  <div id="loss-values"></div>
-
 </section>
+
 
 <section>
-  <h2>Diskussion</h2>
-  <p id="discussion-text">
-    <!-- Hier kannst du deine Beobachtungen und Erkenntnisse einfügen -->
-  </p>
+  <h2>Modell ohne Rauschen</h2>
+  <div class="button-input-container">
+    <button onclick="trainModel('unverrauscht')">Modell ohne Rauschen trainieren</button>
+    <label for="epochs-unverrauscht">Epochen:</label>
+    <input type="number" id="epochs-unverrauscht" placeholder="Epochen" value="150">
+  </div>
+  <div class="row plot-container-wrapper">
+    <div id="plot-predict-unverrauscht-train" class="plot responsive-plot"></div>
+    <div id="plot-predict-unverrauscht-test" class="plot responsive-plot"></div>
+  </div>
+  <div id="loss-values-unverrauscht" class="loss-values-container"></div>
+  <div class="button-container">
+    <button onclick="saveModelFiles('unverrauscht')">Modell ohne Rauschen speichern</button>
+  </div>
 </section>
+
 
 <section>
-  <h2>Dokumentation</h2>
-  <h3>Technisch</h3>
-  <p>- TensorFlow.js: Für Modelltraining und Vorhersagen<br>
-    - Plotly.js: Für interaktive Diagramme</p>
-
-  <h3>Fachlich</h3>
-  <p>Die Funktion wurde über zufällig generierte Punkte durch ein FFNN approximiert. Die Modelle wurden auf verrauschten und unverrauschten Daten trainiert und verglichen. Quellen: Aufgabenstellung, TensorFlow.js Doku.</p>
+  <h2>Modell best-fit</h2>
+  <div class="button-input-container">
+    <button onclick="trainModel('bestfit')">Modell best-fit trainieren</button>
+    <label for="epochs-bestfit">Epochen:</label>
+    <input type="number" id="epochs-bestfit" placeholder="Epochen" value="70">
+  </div>
+  <div class="row plot-container-wrapper">
+    <div id="plot-predict-bestfit-train" class="plot responsive-plot"></div>
+    <div id="plot-predict-bestfit-test" class="plot responsive-plot"></div>
+  </div>
+  <div id="loss-values-bestfit" class="loss-values-container"></div>
+  <div class="button-container">
+    <button onclick="saveModelFiles('bestfit')">Modell best-fit speichern</button>
+  </div>
 </section>
 
+
+<section>
+  <h2>Modell over-fit</h2>
+  <div class="button-input-container">
+    <button onclick="trainModel('overfit')">Modell over-fit trainieren</button>
+    <label for="epochs-overfit">Epochen:</label>
+    <input type="number" id="epochs-overfit" placeholder="Epochen" value="1000">
+  </div>
+  <div class="row plot-container-wrapper">
+    <div id="plot-predict-overfit-train" class="plot responsive-plot"></div>
+    <div id="plot-predict-overfit-test" class="plot responsive-plot"></div>
+  </div>
+  <div id="loss-values-overfit" class="loss-values-container"></div>
+  <div class="button-container">
+    <button onclick="saveModelFiles('overfit')">Modell over-fit speichern</button>
+  </div>
+</section>
+
+<section class="back-button-section">
+  <button onclick="window.location.href='index.html'">Zurück zum Hauptmodus</button>
+</section>
 </body>
 </html>

@@ -43,35 +43,29 @@ function splitData(data) {
 
 // Trainingsfunktion für das Modell mit verschiedenen Einstellungen (über 'type')
 async function trainModel(type) {
-    // Auswahl: mit oder ohne Rauschen trainieren
+    const epochsInput = document.getElementById(`epochs-${type}`);
+    const epochs = epochsInput ? parseInt(epochsInput.value, 10) || 150 : 150;
+
     let data = type === 'unverrauscht' ? trainSet.raw : trainSet.noisy;
 
-    // Wähle Anzahl der Trainingsdurchläufe je nach Typ
-    const epochs = type === 'overfit' ? 1000 : (type === 'bestfit' ? 70 : 150);
-
-    // Modell erstellen (Feedforward Neural Network)
     const model = createModel();
 
-    // Eingabedaten (x) und Ausgabedaten (y) in Tensoren umwandeln
     const xs = tf.tensor2d(data.map(d => [d.x]));
     const ys = tf.tensor2d(data.map(d => [d.y]));
 
-    // Modell trainieren
     await model.fit(xs, ys, {
         batchSize: 32,
         epochs,
-        shuffle: true, // zufällige Reihenfolge
-        verbose: 0 // keine Ausgabe im Log
+        shuffle: true,
+        verbose: 0
     });
 
-    // Tensoren wieder freigeben
     xs.dispose();
     ys.dispose();
 
-    // Modell bewerten (auf Trainings- und Testdaten)
     await evaluateModel(model, type);
 
-    return model; // Modell zurückgeben für weitere Verwendung
+    return model;
 }
 
 
@@ -177,11 +171,11 @@ function plotPredictions(type, train, trainPred, test, testPred) {
 
 // Zeigt die Fehlerwerte (Loss) im HTML-Dokument an
 function displayLoss(type, trainLoss, testLoss) {
-    const div = document.getElementById('loss-values');
-    const html = `<h3>${type.toUpperCase()} Modell</h3>
-    <p>Train Loss (MSE): ${trainLoss.toFixed(4)}</p>
-    <p>Test Loss (MSE): ${testLoss.toFixed(4)}</p>`;
-    div.innerHTML += html;
+    const div = document.getElementById(`loss-values-${type}`);
+    const html = `<h3 class="loss-header">Fehlerwerte</h3>
+    <p class="loss-text">Train Loss (MSE): ${trainLoss.toFixed(4)}</p>
+    <p class="loss-text">Test Loss (MSE): ${testLoss.toFixed(4)}</p>`;
+    div.innerHTML = html;
 }
 
 function saveDataAsJson(data, filename) {

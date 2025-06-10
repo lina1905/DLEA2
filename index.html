@@ -11,55 +11,89 @@
   <script src="script-index.js"></script>
 </head>
 <body>
-<h1>Regression mit FFNN</h1>
+<header>
+  <h1>Regression mit <strong>FFNN</strong></h1>
+</header>
 
 <section id="result-section">
-  <h2>R1: Datensätze</h2>
-  <div class="row">
-    <div id="plot-data-clean" class="plot"></div>
-    <div id="plot-data-noisy" class="plot"></div>
+  <h2>Datensätze</h2>
+  <div class="row plot-container-wrapper">
+    <div id="plot-data-clean" class="plot responsive-plot"></div>
+    <div id="plot-data-noisy" class="plot responsive-plot"></div>
   </div>
+</section>
 
-  <h2>R2: Modell ohne Rauschen</h2>
-  <div class="row">
-    <div id="plot-predict-unverrauscht-train"></div>
-    <div id="plot-predict-unverrauscht-test"></div>
-
-    <div id="plot-predict-clean-train" class="plot"></div>
-    <div id="plot-predict-clean-test" class="plot"></div>
+<section>
+  <h2>Modell ohne Rauschen</h2>
+  <div class="row plot-container-wrapper">
+    <div id="plot-predict-unverrauscht-train" class="plot responsive-plot"></div>
+    <div id="plot-predict-unverrauscht-test" class="plot responsive-plot"></div>
   </div>
+  <div id="loss-values-unverrauscht" class="loss-values-container"></div>
+</section>
 
-  <h2>R3: Modell best-fit</h2>
-  <div class="row">
-    <div id="plot-predict-bestfit-train" class="plot"></div>
-    <div id="plot-predict-bestfit-test" class="plot"></div>
+<section>
+  <h2>Modell best-fit</h2>
+  <div class="row plot-container-wrapper">
+    <div id="plot-predict-bestfit-train" class="plot responsive-plot"></div>
+    <div id="plot-predict-bestfit-test" class="plot responsive-plot"></div>
   </div>
+  <div id="loss-values-bestfit" class="loss-values-container"></div>
+</section>
 
-  <h2>R4: Modell over-fit</h2>
-  <div class="row">
-    <div id="plot-predict-overfit-train" class="plot"></div>
-    <div id="plot-predict-overfit-test" class="plot"></div>
+<section>
+  <h2>Modell over-fit</h2>
+  <div class="row plot-container-wrapper">
+    <div id="plot-predict-overfit-train" class="plot responsive-plot"></div>
+    <div id="plot-predict-overfit-test" class="plot responsive-plot"></div>
   </div>
-
-  <div id="loss-values"></div>
-
+  <div id="loss-values-overfit" class="loss-values-container"></div>
 </section>
 
 <section>
   <h2>Diskussion</h2>
   <p id="discussion-text">
-    <!-- Hier kannst du deine Beobachtungen und Erkenntnisse einfügen -->
+    Die Experimente mit dem Feed-Forward Neural Network (FFNN) zur Regression einer unbekannten Funktion  haben die Konzepte von Modellgeneralität und Overfitting gut demonstriert. Beim Training des Modells auf den unverrauschten Daten zeigte sich, wie erwartet, eine sehr geringe Diskrepanz zwischen dem Trainings- und Test-Loss (MSE von 0.0454 bzw. 0.0483). Dies bestätigt, dass ohne störendes Rauschen das Modell die wahre Funktion nahezu perfekt approximieren und gut auf unbekannte Daten generalisieren kann.
+  </p>
+  <p>
+    Im Gegensatz dazu war die Herausforderung beim verrauschten Datensatz, ein Modell zu finden, das gut generalisiert, ohne die Störungen im Training zu lernen. Das Best-Fit-Modell (Train Loss 0.1483, Test Loss 0.1446 bei 70 Epochen) erreichte hier eine gute Balance. Es zeigte, dass es trotz des Rauschens in der Lage war, die zugrunde liegende Funktion zu erfassen und auf Testdaten gut abzuschneiden, ohne zu überanpassen.
+  </p>
+  <p>
+    Das Overfit-Modell (Train Loss 0.0291, Test Loss 0.0633 bei 1000 Epochen) verdeutlichte das Phänomen des Overfittings. Obwohl der Trainings-Loss extrem niedrig war – ein Indiz dafür, dass das Modell die Trainingsdaten, einschließlich des Rauschens, auswendig gelernt hatte – stieg der Test-Loss deutlich an. Dies zeigt, dass das Modell seine Fähigkeit zur Generalisierung auf unbekannte Daten verloren hat. Durch das Anpassen der Anzahl der Trainings-Epochen konnten wir somit gezielt die Auswirkungen von Underfitting, Best-Fit und Overfitting auf die Modellleistung beobachten und steuern.
   </p>
 </section>
 
 <section>
   <h2>Dokumentation</h2>
   <h3>Technisch</h3>
-  <p>- TensorFlow.js: Für Modelltraining und Vorhersagen<br>
-    - Plotly.js: Für interaktive Diagramme</p>
+  <ul>
+    <li>TensorFlow.js: Dieses JavaScript-Framework wurde umfassend für die Implementierung verwendet. Es ermöglichte die Definition, das Training und die Evaluation der Modelle direkt im Browser.</li>
+    <li>Plotly.js: Diese JavaScript-Bibliothek wurde zur Visualisierung der Datensätze und der Modellvorhersagen eingesetzt.</li>
+    <li>HTML & JavaScript: Die grundlegende Struktur der Webanwendung wurde mit HTML realisiert, während die gesamte Logik (Datengenerierung, Modelltraining, Evaluation, Visualisierung und Speicherung) in JavaScript implementiert wurde.</li>
+  </ul>
 
   <h3>Fachlich</h3>
-  <p>Die Funktion wurde über zufällig generierte Punkte durch ein FFNN approximiert. Die Modelle wurden auf verrauschten und unverrauschten Daten trainiert und verglichen. Quellen: Aufgabenstellung, TensorFlow.js Doku.</p>
+  <p>
+    Die Implementierung der Regression erfolgt mittels eines Feed-Forward Neural Network (FFNN), das aus einer Eingabeschicht, zwei versteckten Schichten (jeweils mit 100 Neuronen und ReLU-Aktivierungsfunktion) und einer Ausgabeschicht (ein Neuron, lineare Aktivierung) besteht. Als Optimierer wurde Adam mit einer Lernrate von 0.01 und einer Batch-Größe von 32 gewählt, und der Mean Squared Error (MSE) dient als Loss-Funktion.
+  </p>
+  <p>
+    Die Lösung simuliert reale Szenarien, indem sie eine unbekannte Funktion <span class="math-inline">y\(x\)</span> durch die Generierung von 100 Datenpunkten im Intervall <span class="math-inline">\[\-2, \+2\]</span> approximiert. Diese Daten wurden anschließend in einen unverrauschten und einen künstlich verrauschten Datensatz unterteilt, wobei letzterer mit Gaußschem Rauschen (<span class="math-inline">V\=0\.05</span>) auf den y-Werten versehen wurde. Beide Datensätze wurden jeweils zufällig in Trainings- und Testdaten (50/50) gesplittet.
+  </p>
+  <p>
+    Drei Modelle wurden trainiert und verglichen:
+  </p>
+  <ul>
+    <li>Ein Modell auf den unverrauschten Daten, um die ideale Approximation ohne Rauschen zu zeigen.</li>
+    <li>Ein "Best-Fit"-Modell auf den verrauschten Daten (70 Epochen), um eine gute Generalisierungsfähigkeit zu erreichen.</li>
+    <li>Ein "Overfit"-Modell auf den verrauschten Daten (1000 Epochen), um das Phänomen des Overfittings gezielt zu provozieren und zu demonstrieren, bei dem das Modell die Trainingsdaten zu stark auswendig lernt und die Leistung auf Testdaten leidet.</li>
+  </ul>
+  <p>
+    Die resultierenden MSE-Werte für Trainings- und Testdaten werden direkt unter den jeweiligen Diagrammen angezeigt, um die Beobachtungen der Modellleistung zu untermauern. Die Implementierung berücksichtigt auch die Möglichkeit, Datensätze zu generieren, zu speichern und zu laden sowie trainierte Modelle zu speichern, was für den Entwicklungsprozess sehr nützlich ist.
+  </p>
+</section>
+
+<section style="text-align: center; margin-top: 20px;">
+  <button onclick="window.location.href='training.html'">Entwicklungsmodus</button>
 </section>
 
 </body>

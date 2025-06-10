@@ -125,9 +125,9 @@ function plotPredictions(type, train, trainPred, test, testPred) {
 
 // Zeigt die Fehlerwerte (Loss) im HTML-Dokument an
 function displayLoss(type, trainLoss, testLoss) {
-    const div = document.getElementById('loss-values');
-    const html = `<h3>${type.toUpperCase()} Modell</h3>
-    <p>Train Loss (MSE): ${trainLoss.toFixed(4)}</p>
-    <p>Test Loss (MSE): ${testLoss.toFixed(4)}</p>`;
-    div.innerHTML += html;
+    const div = document.getElementById(`loss-values-${type}`);
+    const html = `<h3 class="loss-header">Fehlerwerte</h3>
+    <p class="loss-text">Train Loss (MSE): ${trainLoss.toFixed(4)}</p>
+    <p class="loss-text">Test Loss (MSE): ${testLoss.toFixed(4)}</p>`;
+    div.innerHTML = html;
 }
