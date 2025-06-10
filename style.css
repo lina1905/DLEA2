@@ -1,0 +1,9 @@
+.row {
+    display: flex;
+    justify-content: space-between; /* Optional: Abstand zwischen den Elementen */
+}
+
+.plot {
+    flex: 1; /* Optional: gleiche Breite für alle Plots */
+    margin: 0 10px; /* Optional: Abstand zwischen den Plots */
+}
