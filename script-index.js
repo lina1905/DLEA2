@@ -87,23 +87,27 @@ async function testLossAndPreds(model, data) {
 
 // Visualisiert die Daten und Modellvorhersagen mit Plotly
 function plotData() {
-    const layout = { title: 'Datensätze', xaxis: { title: 'x' }, yaxis: { title: 'y' } };
+    const layoutEins = { title: 'Datensätze ohne Rauschen', xaxis: { title: 'x' }, yaxis: { title: 'y' } };
+    const layoutZwei = { title: 'Datensätze mit Rauschen', xaxis: { title: 'x' }, yaxis: { title: 'y' } };
+
 
     // Rohdaten plotten
     Plotly.newPlot('plot-data-clean', [
         { x: trainSet.raw.map(p => p.x), y: trainSet.raw.map(p => p.y), mode: 'markers', name: 'Train' },
         { x: testSet.raw.map(p => p.x), y: testSet.raw.map(p => p.y), mode: 'markers', name: 'Test' }
-    ], layout);
+    ], layoutEins);
 
     // Verrauschte Daten plotten
     Plotly.newPlot('plot-data-noisy', [
         { x: trainSet.noisy.map(p => p.x), y: trainSet.noisy.map(p => p.y), mode: 'markers', name: 'Train' },
         { x: testSet.noisy.map(p => p.x), y: testSet.noisy.map(p => p.y), mode: 'markers', name: 'Test' }
-    ], layout);
+    ], layoutZwei);
 }
 
 function plotPredictions(type, train, trainPred, test, testPred) {
-    const layout = { xaxis: { title: 'x' }, yaxis: { title: 'y' } };
+    const layoutEins = { title: 'Trainingsdaten', xaxis: { title: 'x' }, yaxis: { title: 'y' } };
+    const layoutZwei = { title: 'Testdaten', xaxis: { title: 'x' }, yaxis: { title: 'y' } };
+
     let trainId = `plot-predict-${type}-train`;
     let testId = `plot-predict-${type}-test`;
 
@@ -114,12 +118,12 @@ function plotPredictions(type, train, trainPred, test, testPred) {
     Plotly.newPlot(trainId, [
         { x: train.map(p => p.x), y: train.map(p => p.y), mode: 'markers', name: 'True' },
         { x: trainPred.map(p => p.x), y: trainPred.map(p => p.y), mode: 'lines', name: 'Predicted' }
-    ], layout);
+    ], layoutEins);
 
     Plotly.newPlot(testId, [
         { x: test.map(p => p.x), y: test.map(p => p.y), mode: 'markers', name: 'True' },
         { x: testPred.map(p => p.x), y: testPred.map(p => p.y), mode: 'lines', name: 'Predicted' }
-    ], layout);
+    ], layoutZwei);
 }
 
 
