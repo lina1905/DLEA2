@@ -56,10 +56,15 @@
     Die Experimente mit dem Feed-Forward Neural Network (FFNN) zur Regression einer unbekannten Funktion  haben die Konzepte von Modellgeneralität und Overfitting gut demonstriert. Beim Training des Modells auf den unverrauschten Daten zeigte sich, wie erwartet, eine sehr geringe Diskrepanz zwischen dem Trainings- und Test-Loss (MSE von 0.0454 bzw. 0.0483). Dies bestätigt, dass ohne störendes Rauschen das Modell die wahre Funktion nahezu perfekt approximieren und gut auf unbekannte Daten generalisieren kann.
   </p>
   <p>
-    Im Gegensatz dazu war die Herausforderung beim verrauschten Datensatz, ein Modell zu finden, das gut generalisiert, ohne die Störungen im Training zu lernen. Das Best-Fit-Modell (Train Loss 0.1483, Test Loss 0.1446 bei 70 Epochen) erreichte hier eine gute Balance. Es zeigte, dass es trotz des Rauschens in der Lage war, die zugrunde liegende Funktion zu erfassen und auf Testdaten gut abzuschneiden, ohne zu überanpassen.
+    Im Gegensatz dazu war die Herausforderung beim verrauschten Datensatz, einen guten Wert für die Epochen zu finden.
+    Eine Epochenanzahl von 70 führe zu einer guten Balance beim Best-fit-Modell (Train
+    Loss 0.1483, Test Loss 0.1446).
+    Es zeigte, dass es trotz des Rauschens in der Lage war, die zugrunde liegende Funktion zu erfassen und auf Testdaten gut abzuschneiden, ohne zu überanpassen.
   </p>
   <p>
-    Das Overfit-Modell (Train Loss 0.0291, Test Loss 0.0633 bei 1000 Epochen) verdeutlichte das Phänomen des Overfittings. Obwohl der Trainings-Loss extrem niedrig war – ein Indiz dafür, dass das Modell die Trainingsdaten, einschließlich des Rauschens, auswendig gelernt hatte – stieg der Test-Loss deutlich an. Dies zeigt, dass das Modell seine Fähigkeit zur Generalisierung auf unbekannte Daten verloren hat. Durch das Anpassen der Anzahl der Trainings-Epochen konnten wir somit gezielt die Auswirkungen von Underfitting, Best-Fit und Overfitting auf die Modellleistung beobachten und steuern.
+    Das Overfit-Modell (Train Loss 0.0291, Test Loss 0.0633 bei 1000 Epochen) verdeutlichte das Phänomen des
+    Overfittings. Obwohl der Trainings-Loss extrem niedrig war, ein Indiz dafür, dass das Modell die Trainingsdaten,
+    einschließlich des Rauschens, auswendig gelernt hatte, stieg der Test-Loss deutlich an. Dies zeigt, dass das Modell seine Fähigkeit zur Generalisierung auf unbekannte Daten verloren hat.
   </p>
 </section>
 
@@ -77,7 +82,7 @@
     Die Implementierung der Regression erfolgt mittels eines Feed-Forward Neural Network (FFNN), das aus einer Eingabeschicht, zwei versteckten Schichten (jeweils mit 100 Neuronen und ReLU-Aktivierungsfunktion) und einer Ausgabeschicht (ein Neuron, lineare Aktivierung) besteht. Als Optimierer wurde Adam mit einer Lernrate von 0.01 und einer Batch-Größe von 32 gewählt, und der Mean Squared Error (MSE) dient als Loss-Funktion.
   </p>
   <p>
-    Die Lösung simuliert reale Szenarien, indem sie eine unbekannte Funktion <span class="math-inline">y\(x\)</span> durch die Generierung von 100 Datenpunkten im Intervall <span class="math-inline">\[\-2, \+2\]</span> approximiert. Diese Daten wurden anschließend in einen unverrauschten und einen künstlich verrauschten Datensatz unterteilt, wobei letzterer mit Gaußschem Rauschen (<span class="math-inline">V\=0\.05</span>) auf den y-Werten versehen wurde. Beide Datensätze wurden jeweils zufällig in Trainings- und Testdaten (50/50) gesplittet.
+    Die Lösung simuliert reale Szenarien, indem sie eine unbekannte Funktion <span class="math-inline">y(x)</span> durch die Generierung von 100 Datenpunkten im Intervall <span class="math-inline">[-2, +2]</span> approximiert. Diese Daten wurden anschließend in einen unverrauschten und einen künstlich verrauschten Datensatz unterteilt, wobei letzterer mit Gaußschem Rauschen (<span class="math-inline">V=0.05</span>) auf den y-Werten versehen wurde. Beide Datensätze wurden jeweils zufällig in Trainings- und Testdaten (50/50) gesplittet.
   </p>
   <p>
     Drei Modelle wurden trainiert und verglichen:
@@ -88,7 +93,7 @@
     <li>Ein "Overfit"-Modell auf den verrauschten Daten (1000 Epochen), um das Phänomen des Overfittings gezielt zu provozieren und zu demonstrieren, bei dem das Modell die Trainingsdaten zu stark auswendig lernt und die Leistung auf Testdaten leidet.</li>
   </ul>
   <p>
-    Die resultierenden MSE-Werte für Trainings- und Testdaten werden direkt unter den jeweiligen Diagrammen angezeigt, um die Beobachtungen der Modellleistung zu untermauern. Die Implementierung berücksichtigt auch die Möglichkeit, Datensätze zu generieren, zu speichern und zu laden sowie trainierte Modelle zu speichern, was für den Entwicklungsprozess sehr nützlich ist.
+    Die resultierenden MSE-Werte für Trainings- und Testdaten werden direkt unter den jeweiligen Diagrammen angezeigt, um die Beobachtungen der Modellleistung zu untermauern.
   </p>
 </section>
 
